@@ -7,7 +7,7 @@ from Town_of_Salem import game_flow as Salem
 from guess_game import guess_number
 from star_catcher_game import main as star_catcher_game
 
-def main():
+if __name__ == "__main__":
     choice = int(input("Press \n1.To play tic tac toe \n2.To play hangman \n3.To play rock paper scissors \n4.To play the pong game \n5.To generate a random labyrinth \n6.To play Town of Salem \n7.To play a guessing game \n8.To play the star catcher game: "))
     if choice == 1:
         tic_tac_toe()
@@ -27,6 +27,3 @@ def main():
         star_catcher_game()
     else:
      	print ("Invalid input! ")
-    
-if __name__ == "__main__":
-    main()
