@@ -24,7 +24,7 @@ def draw_window(player, elapsed_time, stars, WINDOW, BACKROUND, FONT):
     
     pygame.display.update()
 
-def update_stars(stars, star_count, STAR_HEIGHT, STAR_WIDTH, STAR_VEL):
+def update_stars(stars, star_count, STAR_HEIGHT, STAR_WIDTH, STAR_VEL, WIDTH, HEIGHT):
     """
     The function updates the positions of stars and adds new stars to the list based on a given star
     count.
@@ -72,7 +72,6 @@ def main():
 
     # Constants
     WINDOW = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-    global WIDTH, HEIGHT
     WIDTH, HEIGHT = WINDOW.get_size()
     BACKROUND_IMAGE = pygame.image.load("BACKROUND.jpeg").convert()
     BACKROUND = pygame.transform.scale(BACKROUND_IMAGE, (WIDTH, HEIGHT))
@@ -80,21 +79,21 @@ def main():
     STAR_WIDTH, STAR_HEIGHT, STAR_VEL = 10, 20, 3
     FONT = pygame.font.SysFont("comicsans", 30)
     
-    run, hit = True, False
+    hit = False
     clock = pygame.time.Clock()
     start_time = time.time()
     stars = []
     star_count = 0
     player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT)
     
-    while run:
+    while True:
         elapsed_time = time.time() - start_time
         star_count += 1
         clock.tick(60)
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                break
         
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and player.x - PLAYER_VEL > 0:
@@ -102,7 +101,7 @@ def main():
         if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width < WIDTH:
             player.x += PLAYER_VEL
         
-        stars = update_stars(stars, star_count, STAR_HEIGHT, STAR_WIDTH, STAR_VEL)
+        stars = update_stars(stars, star_count, STAR_HEIGHT, STAR_WIDTH, STAR_VEL, WIDTH, HEIGHT)
         hit = check_collision(stars, player)
         
         if hit:
@@ -110,7 +109,7 @@ def main():
             WINDOW.blit(game_over_text, (WIDTH//2 - game_over_text.get_width()//2, HEIGHT//2 - game_over_text.get_height()//2))
             pygame.display.update()
             pygame.time.delay(2000)  # Display the game over text for 2 seconds
-            run = False
+            break
         
         draw_window(player, elapsed_time, stars, WINDOW, BACKROUND, FONT)
     
